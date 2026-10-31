@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How I generate articles on GitHub Pages — nordi_</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐾</text></svg>">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,sans-serif;background:#0a0a0f;color:#e4e4e7;line-height:1.6}
+a{color:#fff;text-decoration:none}
+a:hover{color:#e4e4e7}
+.container{max-width:1000px;margin:0 auto;padding:0 24px}
+/* Nav */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,10,15,.85);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.05)}
+nav .container{display:flex;justify-content:space-between;align-items:center;height:60px}
+nav .logo{font-weight:700;font-size:1.2rem;color:#fff}
+nav ul{display:flex;gap:28px;list-style:none}
+nav ul a{font-size:.9rem;color:#a1a1aa;transition:color .2s}
+nav ul a:hover{color:#fff}
+/* Hero */
+.hero{min-height:100vh;display:flex;align-items:center;padding-top:60px}
+.hero-content{display:flex;align-items:center;gap:60px;flex-wrap:wrap}
+.hero-text{flex:1;min-width:300px}
+.hero-text .greeting{color:#fff;font-size:1rem;margin-bottom:8px;display:block}
+.hero-text h1{font-size:clamp(2.5rem,5vw,4rem);font-weight:800;line-height:1.1;margin-bottom:8px}
+.hero-text h1{color:#fff}
+.hero-text h2{font-size:clamp(1.2rem,2.5vw,1.8rem);color:#a1a1aa;font-weight:400;margin-bottom:20px}
+.hero-text p{color:#71717a;max-width:500px;margin-bottom:32px;font-size:1.05rem}
+.hero-avatar{flex-shrink:0;width:280px;height:280px;border-radius:50%;border:3px solid rgba(34,211,238,.3);background:linear-gradient(135deg,#1e1b4b,#0a0a0f);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.hero-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.social-links{display:flex;gap:16px;margin-top:24px}
+.social-links a{display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.1);color:#a1a1aa;transition:all .3s;font-size:1.2rem}
+.social-links a:hover{border-color:#fff;color:#fff;transform:translateY(-2px)}
+.btn{display:inline-block;padding:12px 28px;border-radius:8px;font-weight:600;font-size:.95rem;transition:all .3s;cursor:pointer}
+.btn-primary{background:#fff;color:#0a0a0f;border:none}
+.btn-primary:hover,.btn-primary:active,.btn-primary:focus{background:#e4e4e7;color:#0a0a0f;transform:translateY(-2px);outline:none}
+.btn-outline{border:1px solid rgba(255,255,255,.2);color:#e4e4e7;background:transparent}
+.btn-outline:hover{border-color:#fff;color:#fff;transform:translateY(-2px)}
+.cta-buttons{display:flex;gap:12px;flex-wrap:wrap}
+/* Section */
+section{padding:100px 0}
+.section-title{font-size:2rem;font-weight:700;margin-bottom:48px}
+/* Skills */
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fit,80px);gap:24px;justify-content:start}
+.skills-grid img{width:80px;height:80px;border-radius:14px;transition:transform .3s;background:rgba(255,255,255,.03);padding:8px}
+.skills-grid img:hover{transform:translateY(-4px);background:rgba(34,211,238,.08)}
+/* Projects */
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}
+.project-card{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:28px;transition:all .3s}
+.project-card:hover{border-color:rgba(34,211,238,.2);transform:translateY(-4px)}
+.project-card .project-header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.project-card .project-header h3{font-size:1.15rem;font-weight:600}
+.project-card .project-header .lang{font-size:.7rem;background:rgba(34,211,238,.15);color:#fff;padding:2px 10px;border-radius:20px}
+.project-card p{color:#71717a;font-size:.9rem;margin-bottom:16px}
+.project-card .tech{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.project-card .tech span{font-size:.75rem;background:rgba(255,255,255,.05);color:#a1a1aa;padding:4px 10px;border-radius:6px}
+.project-card .project-links{display:flex;gap:12px}
+.project-card .project-links a{font-size:.85rem;color:#fff;display:flex;align-items:center;gap:4px}
+/* Experience */
+.timeline{position:relative;padding-left:32px}
+.timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:rgba(255,255,255,.08)}
+.timeline-item{position:relative;margin-bottom:40px}
+.timeline-item::before{content:'';position:absolute;left:-38px;top:6px;width:12px;height:12px;border-radius:50%;background:#fff;border:3px solid #0a0a0f}
+.timeline-item .period{font-size:.8rem;color:#71717a;margin-bottom:4px}
+.timeline-item h3{font-size:1.1rem;font-weight:600;margin-bottom:4px}
+.timeline-item .company{color:#fff;font-size:.9rem}
+.timeline-item p{color:#71717a;font-size:.9rem;margin-top:8px}
+.timeline-item ul{margin-top:8px;padding-left:20px}
+.timeline-item ul li{color:#71717a;font-size:.9rem;margin-bottom:4px}
+/* Contact */
+.contact-section{text-align:center}
+.contact-section p{color:#71717a;max-width:500px;margin:0 auto 32px}
+/* Footer */
+footer{text-align:center;padding:32px 0;border-top:1px solid rgba(255,255,255,.06);color:#52525b;font-size:.85rem}
+/* SVG icons inline */
+.icon-svg{display:inline-block;width:22px;height:22px;fill:currentColor}
+.divider{width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(34,211,238,.2),transparent);margin:0}
+.nav-toggle{display:none;background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer;padding:4px}
+/* Blog */
+.blog-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;margin-bottom:32px}
+.blog-search{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:10px 16px;color:#e4e4e7;font-size:.9rem;width:240px;outline:none;transition:border-color .2s}
+.blog-search:focus{border-color:rgba(34,211,238,.4)}
+.blog-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px}
+.blog-tag{font-size:.8rem;background:rgba(255,255,255,.05);color:#a1a1aa;padding:4px 14px;border-radius:20px;cursor:pointer;transition:all .2s;border:1px solid transparent}
+.blog-tag:hover,.blog-tag.active{border-color:rgba(34,211,238,.3);color:#fff}
+.blog-list{display:flex;flex-direction:column;gap:16px}
+.blog-card{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:24px;transition:all .3s;cursor:pointer}
+.blog-card:hover{border-color:rgba(34,211,238,.2);transform:translateY(-2px)}
+.blog-card h3{font-size:1.1rem;font-weight:600;margin-bottom:6px}
+.blog-card .blog-meta{font-size:.8rem;color:#71717a;margin-bottom:8px}
+.blog-card .blog-desc{font-size:.9rem;color:#71717a;margin-bottom:10px}
+.blog-card .blog-card-tags{display:flex;flex-wrap:wrap;gap:6px}
+.blog-card .blog-card-tags span{font-size:.7rem;background:rgba(255,255,255,.05);color:#a1a1aa;padding:2px 10px;border-radius:12px}
+
+@media(max-width:768px){
+.nav-toggle{display:block}
+nav ul{display:none;flex-direction:column;position:absolute;top:60px;left:0;right:0;background:rgba(10,10,15,.95);backdrop-filter:blur(12px);padding:16px 24px;border-bottom:1px solid rgba(255,255,255,.05);gap:16px}
+nav ul.open{display:flex}
+.hero-content{flex-direction:column-reverse;text-align:center}
+.hero-text p{margin:0 auto 32px}
+.cta-buttons{justify-content:center}
+.social-links{justify-content:center}}
+.article-page{padding-top:100px}
+.article-page .container{max-width:720px;margin:0 auto;padding:0 24px}
+.article-back{display:inline-flex;align-items:center;gap:6px;color:#a1a1aa;font-size:.9rem;margin-bottom:32px;cursor:pointer;text-decoration:none}
+.article-back:hover{color:#fff}
+.article-content{line-height:1.8;font-size:1.05rem}
+.article-content h1{font-size:2rem;margin-bottom:16px;color:#fff}
+.article-content h2{font-size:1.4rem;margin-top:32px;margin-bottom:12px;color:#fff}
+.article-content h3{font-size:1.15rem;margin-top:24px;margin-bottom:8px;color:#fff}
+.article-content p{margin-bottom:16px;color:#d4d4d8}
+.article-content ul,.article-content ol{padding-left:24px;margin-bottom:16px;color:#d4d4d8}
+.article-content li{margin-bottom:4px}
+.article-content a{color:#67e8f9;text-decoration:underline}
+.article-content a:hover{color:#22d3ee}
+.article-content code{background:rgba(255,255,255,.06);padding:2px 6px;border-radius:4px;font-size:.9em}
+.article-content pre{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:16px;overflow-x:auto;margin-bottom:16px}
+.article-content pre code{background:none;padding:0;font-size:.85rem;color:#e4e4e7}
+.article-content strong{color:#fff}
+.article-content blockquote{border-left:3px solid rgba(34,211,238,.3);padding-left:16px;color:#a1a1aa;margin-bottom:16px;font-style:italic}
+.article-content img{max-width:100%;border-radius:8px;margin:16px 0}
+.article-content hr{border:none;height:1px;background:rgba(255,255,255,.06);margin:32px 0}
+</style>
+</head>
+<body style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,sans-serif;background:#0a0a0f;color:#e4e4e7;line-height:1.6;margin:0">
+<div class="article-page">
+<div class="container">
+<a class="article-back" href="/">← Back to home</a>
+<div class="article-content">
+<h1>How I generate articles on GitHub Pages</h1>
+<br>
+<p>This site runs on GitHub Pages — static hosting, no backend. But I wanted to write articles in Markdown and have them render in my site&#x27;s style.</p>
+<br>
+<h2>The workflow</h2>
+<br>
+<ol><li>Write a <code>.md</code> file in <code>articles/</code> with YAML frontmatter</li><li>Run <code>python3 build.py</code></li><li>The script generates a styled <code>.html</code> file in <code>dist/</code></li></ol>
+<br>
+<h2>The script</h2>
+<br>
+<p>The <code>build.py</code> script:</p>
+<br>
+<ul><li>Parses frontmatter (title, date, tags, description)</li><li>Converts Markdown to HTML (headings, bold, code blocks, lists, links)</li><li>Wraps it in the same dark theme CSS as the main site</li><li>Generates <code>dist/index.json</code> for the blog listing with search and tag filtering</li></ul>
+<br>
+<p>A new article is just a new <code>.md</code> file and one command.</p>
+</div>
+</div>
+</div>
+</body>
+</html>

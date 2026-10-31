@@ -1,0 +1,34 @@
+[
+  {
+    "slug": "welcome",
+    "title": "Welcome to my blog",
+    "date": "2026-08-28",
+    "description": "",
+    "tags": [
+      "meta",
+      "intro"
+    ]
+  },
+  {
+    "slug": "load-balancer",
+    "title": "Building an HTTP load balancer in Python",
+    "date": "2026-08-20",
+    "description": "",
+    "tags": [
+      "python",
+      "networking",
+      "projects"
+    ]
+  },
+  {
+    "slug": "article-generation",
+    "title": "How I generate articles on GitHub Pages",
+    "date": "2026-08-28",
+    "description": "Using a Python script to convert Markdown to styled HTML pages.",
+    "tags": [
+      "meta",
+      "python",
+      "web"
+    ]
+  }
+]
